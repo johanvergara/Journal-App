@@ -1,13 +1,15 @@
 import React, { useEffect, useRef } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { activeNote, startDeleting } from '../../actions/notes';
 import { useForm } from '../../hooks/useForm';
 import { NotesAppBar } from './NotesAppBar';
 
 export const NoteScreen = () => {
 
+    const dispatch = useDispatch();
     const { active:note } = useSelector( state => state.notes );
     const [ formValues, handleInputChange, reset ] = useForm( note );
-    const { body, title } = formValues;
+    const { body, title, id } = formValues;
 
     const activeId = useRef( note.id );
 
@@ -17,8 +19,15 @@ export const NoteScreen = () => {
             activeId.current = note.id
         }
     }, [note, reset]);
-    
 
+    useEffect(() => {
+        dispatch( activeNote(formValues.id, { ...formValues }));
+    }, [formValues, dispatch]);
+
+    const handleDelete = () => {
+        dispatch(startDeleting(id));
+    }
+    
     return( 
         <div className='notes__main-content'>
             <NotesAppBar />
@@ -28,12 +37,14 @@ export const NoteScreen = () => {
                     placeholder='Somo awesome title'
                     className='notes__title-input'
                     autoComplete='off'
+                    name='title'
                     value={title}
                     onChange={handleInputChange}
                 />
                 <textarea
                     placeholder='What happened today'
                     className='notes__textarea'
+                    name='body'
                     value={body}
                     onChange={handleInputChange}
                 ></textarea>
@@ -42,13 +53,19 @@ export const NoteScreen = () => {
                     && (
                         <div className='notes__image'>
                             <img 
-                                src='https://images.ctfassets.net/hrltx12pl8hq/66lRNN2kfHcVSUMrmrcKxf/76b78071032586ff9766d8eb51592f21/free-nature-images.jpg?fit=fill&w=840&h=350'
+                                src={note.url}
                                 alt='imagen'
                             />
                         </div>
                     )
                 }
             </div>
+            <button
+                className='btn btn-danger'
+                onClick={handleDelete}
+            >
+                Delete
+            </button>
         </div>
     )
 };
