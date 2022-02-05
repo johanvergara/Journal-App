@@ -12,6 +12,7 @@ import { JournalScreen } from '../components/journal/JournalScreen';
 import { AuthRouter } from './AuthRouter';
 import { PrivateRouter } from './PrivateRouter';
 import { PublicRouter } from './PublicRouter';
+import { startLoadingNotes } from '../actions/notes';
 
 export const AppRouter = () => {
 
@@ -22,12 +23,13 @@ export const AppRouter = () => {
 
     useEffect(() => {
         const auth = getAuth();
-        onAuthStateChanged(auth, (user) => {
+        onAuthStateChanged(auth, async (user) => {
             if(user?.uid) {
                 dispatch(
                     login(user.uid, user.displayName)
                 );
                 setIsLoggedIn(true);
+                dispatch(startLoadingNotes(user.uid));
             } else {
                 setIsLoggedIn(false);
             }

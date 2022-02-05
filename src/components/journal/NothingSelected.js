@@ -10,5 +10,5 @@ export const NothingSelected = () => {
             </p>
             <li className='far fa-star fa-4x mt-5'></li>
         </div>
-    );
-};
+    )
+}

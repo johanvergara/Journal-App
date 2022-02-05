@@ -1,8 +1,5 @@
-import 'firebase/firestore';
-import 'firebase/auth';
- 
 import { initializeApp } from "firebase/app";
-import { getFirestore } from 'firebase/firestore';
+import { getFirestore, doc, setDoc, collection } from 'firebase/firestore';
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 
 const firebaseConfig = {
@@ -24,5 +21,8 @@ export {
     db,
     googleAuthProvider,
     signInWithPopup,
-    getAuth
+    getAuth,
+    doc, //Referencia a documento en Firestore
+    setDoc, // Setea Datos en la base de Firestore,
+    collection,
 }
