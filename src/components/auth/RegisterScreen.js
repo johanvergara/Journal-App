@@ -12,11 +12,6 @@ export const RegisterScreen = () => {
     const { msgError } = useSelector( state => state.ui );
 
     const [ formValue, handleInputChange] = useForm({
-        // name: 'Juan',
-        // last: 'Martinez',
-        // email: 'correo@correo.com',
-        // password: '123456',
-        // password2: '123456'
         name: '',
         last: '',
         email: '',
@@ -37,10 +32,10 @@ export const RegisterScreen = () => {
     const isFormValid = () => {
 
         if (validator.isEmpty(name)) {
-            dispatch(setError('Invalid name'))
+            dispatch(setError('Name is required'))
             return false;
         } else if ( !validator.isEmail(email) ) {
-            dispatch(setError('Invalid email'))
+            dispatch(setError('Email is not valid'))
             return false;
         } else if ((!validator.equals(password, password2)) || (validator.isStrongPassword(password, { minLenght: 5 }))) {
             dispatch(setError('Password should be at least 6 characters and match each other'));
